@@ -9,6 +9,8 @@ esphome:
 
 esp32:
   board: esp32dev
+  framework:
+    type: arduino
 
 wifi:
   networks:
@@ -25,7 +27,7 @@ logger:
     ntc: WARN
 
 ota:
-  safe_mode: true
+  - platform: esphome
 
 # API. Add api_pwd to your secrets.yaml.
 api:
@@ -171,6 +173,10 @@ sensor:
       reference_temperature: 25°C
       reference_resistance: 10kOhm
     name: $friendly_devicename Temperature
+    filters:
+      - sliding_window_moving_average:
+          window_size: 15
+          send_every: 15
 
 output:
   # Buzzer for playing tones
